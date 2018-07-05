@@ -1,0 +1,10 @@
+RedirectAttributesModelMap modelMap
+用来重定向传递数据
+return "redirect:list-user.shtml";
+
+
+
+
+<shiro:hasPermission name="indexs"> 验证是否有权限
+http://blog.csdn.net/peterwanghao/article/details/8165028
+

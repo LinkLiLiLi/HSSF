@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>周报</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8 !important;">
+<div class="weui-cells__title">本周工作内容</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='done' class="weui-textarea" placeholder="请填写文字" rows="2"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/200</div>
+		</div>
+	</div>
+</div>
+<div class="weui-cells__title">本周工作总结</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='undone' class="weui-textarea" placeholder="请填写文字" rows="2"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/200</div>
+		</div>
+	</div>
+</div>
+<div class="weui-cells__title">下周工作计划</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='xietiao' class="weui-textarea" placeholder="请填写文字" rows="2"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/200</div>
+		</div>
+	</div>
+</div>
+<div class="weui-cells__title">需要协调与帮助</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='help' class="weui-textarea" placeholder="请填写文字" rows="2"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/200</div>
+		</div>
+	</div>
+</div>
+<div class="weui-cells__title">其它信息</div>
+<div class="weui-cells weui-cells_form">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='beizhu' class="weui-textarea" placeholder="备注" rows="2"></textarea>
+		</div>
+	</div>
+</div>
+<a class="weui-btn-area weui-btn weui-btn_primary" href="javascript:" id="submit">提交</a>
+
+<script src="./lib/fastclick.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script>
+	$(function() {
+		FastClick.attach(document.body);
+	});
+</script>
+<script>
+	$('#dialogs').on('click', '.weui-dialog__btn', function(){
+		$(this).parents('.js_dialog').fadeOut(200);
+	});
+	$("#submit").click(function() {
+		var info = $('#yuanyou').val();
+		if (info && info.length > 0) {
+			$.confirm("您确定要提交此次外出申请吗?", "外出确认?", function() {
+				$.showLoading("数据提交中");
+				setTimeout(function() {
+					var success = true;
+					$.hideLoading();
+					if (success) {
+						$.alert("等待上级审批", "成功！", function () {
+							window.history.go(-1);
+						});
+					} else {
+						$.toptip('操作失败', 'error');
+					}
+				}, 2000)
+			}, function() {
+			});
+		} else {
+			$.toptip('请输入外出事由');
+		}
+	});
+</script>
+
+<script>
+	$("#starttime").datetimePicker({
+		times: function () {
+			return [
+				{
+					values: (function () {
+						var hours = [];
+						for (var i=0; i<24; i++) hours.push(i > 9 ? i : '0'+i);
+						return hours;
+					})()
+				},
+				{
+					divider: true,  // 这是一个分隔符
+					content: '时'
+				}
+			];
+		},
+		onChange: function (picker, values, displayValues) {
+			console.log(values);
+		},
+	});
+	$("#endtime").datetimePicker({
+		times: function () {
+			return [
+				{
+					values: (function () {
+						var hours = [];
+						for (var i=0; i<24; i++) hours.push(i > 9 ? i : '0'+i);
+						return hours;
+					})()
+				},
+				{
+					divider: true,  // 这是一个分隔符
+					content: '时'
+				}
+			];
+		},
+		onChange: function (picker, values, displayValues) {
+			console.log(values);
+		},
+	});
+</script>
+<script>
+	$(function () {
+		FastClick.attach(document.body);
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+.hide-box{	width: 80%;	position: fixed;top: 24%;left: 10%;	padding: 15px 40px 15px 20px;background-color: #fff;box-shadow: 1px 2px 26px #888888;}
+.closeBtn{width: 30px;height: 30px;line-height: 30px;text-align: center;position: absolute;	top: 0;	right: 0;cursor: pointer;color: #1b1b1b;
+	-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+.closeBtn:hover{background-color: #ccc;	color: #fff;}
+.content{width:100%;max-height:300px;overflow:auto; border-radius:3px;border-top: 2px solid #09F;opacity: 100%;}
+.alertWindow{width: 100%;height:100%;position: fixed;top: 0;left: 0;background-color: rgba(0,0,0,0)!important;background-color: #000;filter:Alpha(opacity=00);display: none;}
+.alertWindow .bg_table{	min-width: 0;}
+.alertWindow .bg_table table{min-width: 0;}
+.marginR_10{margin-right: 5%;};
+.radioItem{margin-left: 5%;}
+input[type='button']{cursor: pointer;}
+.ib{display: inline-block;}
+.chooseBtn{width: 100px;height: 35px;background-color: #e22b2c;	border: none;border-radius: 5px;margin-left: 15px;color: #fff;}
+#bigBtn{width: 200px;height: 100px;border-radius: 40px;background-color: skyblue;margin: 0 auto;font-size: 40px;color: #fff;text-align: center;	line-height: 100px;cursor: pointer;}
+	

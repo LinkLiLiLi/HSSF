@@ -1,0 +1,156 @@
+/*
+ * WorkJoutanlController.java
+ * 创建者：L
+ * 系统名称：农业自动化内部管理系统。
+ * 创建日期：2017年7月18日 下午10:42:25
+ * 创业小团队-后台
+ */
+package team.nercita.manage.cms.contoller.deptmanage;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import team.nercita.manage.cms.po.deptmanage.User;
+import team.nercita.manage.cms.po.deptmanage.WorkJoutanl;
+import team.nercita.manage.cms.service.usermanage.UserService;
+import team.nercita.manage.cms.service.usermanage.WorkJoutanlService;
+import team.nercita.manage.cms.service.usermanage.WorkPlanService;
+import team.nercita.manage.cms.util.DateUtil;
+
+/**
+ * 周工作日志
+ * @author L
+ * @date 2017年7月18日 下午10:42:25
+ */
+@Controller
+@RequestMapping("/workjoutanl")
+public class WorkJoutanlController {
+	
+	@Autowired
+	UserService userService;
+	@Autowired
+	WorkJoutanlService workJoutanlService;
+	@Autowired
+	WorkPlanService workPlanService;
+	
+	@RequestMapping("/detail")
+	public ModelAndView detail(@ModelAttribute(value="userId") String userId, @ModelAttribute(value="startTime") String startTime, @ModelAttribute(value="endTime") String endTime){
+		User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+		ModelAndView view = new ModelAndView("deptmanage/workJoutanl/detail");
+		
+		List<User> userList = userService.doJoinTransFindUserList(user.getId());
+		if(StringUtils.isBlank(startTime)){
+			startTime = DateUtil.getWeekFirst();
+		}
+		
+		if(StringUtils.isBlank(endTime)) {
+			endTime = DateUtil.getWeekEnd();
+		}
+		
+		if(StringUtils.isBlank(userId)){
+			userId = userList.get(0).getId();
+			view.addObject("userId", userId);
+		}
+		
+		Date beginDate = DateTime.parse(startTime).toDate();
+		Date endDate = DateTime.parse(endTime).toDate();
+		
+		view.addObject("userList", userList);
+		view.addObject("workJoutanlList", workJoutanlService.doJoinTransFindWorkJoutanl(userId, beginDate, endDate));
+		view.addObject("workPlanList", workPlanService.doJoinTransFindWorkPlanList(userId, beginDate, endDate));
+		view.addObject("monday", DateUtil.getMondayOfThisWeek());
+		view.addObject("sunday", DateUtil.getSundayOfThisWeek());
+		
+		view.addObject("startTime", startTime);
+		view.addObject("endTime", endTime);
+		return view;
+	}
+	
+	@RequestMapping("/toadd")
+	public ModelAndView toadd(){
+		User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+		
+		WorkJoutanl workJoutanl = workJoutanlService.doJoinTransFindCurrDayWorkJoutanl(user.getId());
+		
+		if(workJoutanl != null) {
+			return new ModelAndView("redirect:/workjoutanl/toedit/" + workJoutanl.getId());
+		}
+		ModelAndView view = new ModelAndView("deptmanage/workJoutanl/add");
+		view.addObject("nowDate", new Date());
+		return view;
+	}
+	
+	@RequestMapping("/checkdate")
+	@ResponseBody
+	public Map<String, String> checkdate(String joutanlDate){
+		User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+		WorkJoutanl workJoutanl = workJoutanlService.doJoinTransFindDayWorkJoutanl(user.getId(), DateTime.parse(joutanlDate).toDate());
+		if(workJoutanl == null) {
+			return null;
+		}
+		Map<String, String> resultmap = new HashMap<>();
+		resultmap.put("id", workJoutanl.getId());
+		resultmap.put("workContent", workJoutanl.getWorkContent());
+		return resultmap;
+	}
+	
+	@RequestMapping("/add")
+	public String add(String id, String joutanlDate, String content, RedirectAttributes attr){
+		if(StringUtils.isNotBlank(id)) {
+			WorkJoutanl workJoutanl = new WorkJoutanl();
+			workJoutanl.setId(id);
+			workJoutanl.setWorkContent(content);
+			workJoutanlService.doTransUpdateWorkJoutanl(workJoutanl);
+			
+			attr.addFlashAttribute("msg", "修改成功!");
+			
+			return "redirect:/workjoutanl/detail";
+		}
+		
+		WorkJoutanl workJoutanl = new WorkJoutanl();
+		User user = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+		workJoutanl.setUser(user);
+		workJoutanl.setJoutanlDate(DateTime.parse(joutanlDate).toDate());
+		workJoutanl.setWorkContent(content);
+		
+		workJoutanlService.doTransSaveWorkJoutanl(workJoutanl);
+		
+		attr.addFlashAttribute("msg", "添加成功!");
+		return "redirect:/workjoutanl/detail";
+	}
+	
+	@RequestMapping("/toedit/{id}")
+	public ModelAndView toedit(@PathVariable String id){
+		ModelAndView view = new ModelAndView("deptmanage/workJoutanl/edit");
+		view.addObject("workJoutanl", workJoutanlService.doJoinTransFindWorkJoutanlById(id));
+		return view;
+	}
+	
+	@RequestMapping("/edit")
+	public String edit(String content ,String id, RedirectAttributes attr){
+		WorkJoutanl workJoutanl = new WorkJoutanl();
+		workJoutanl.setId(id);
+		workJoutanl.setWorkContent(content);
+		workJoutanlService.doTransUpdateWorkJoutanl(workJoutanl);
+		
+		attr.addFlashAttribute("msg", "修改成功!");
+		
+		return "redirect:/workjoutanl/detail";
+	}
+	
+}

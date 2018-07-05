@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>管理服务</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+</head>
+<body ontouchstart>
+<div class="weui-tab">
+	<div class="weui-tab__bd">
+		<div id="tab1" class="demos-content-padded weui-tab__panel weui-tab__bd-item weui-pull-to-refresh"
+		     style="top: 0px !important; width:100%;">
+			<div class="weui-pull-to-refresh__layer">
+				<div class='weui-pull-to-refresh__arrow'></div>
+				<div class='weui-pull-to-refresh__preloader'></div>
+				<div class="down">下拉刷新</div>
+				<div class="up">释放刷新</div>
+				<div class="refresh">正在刷新</div>
+			</div>
+			<div class="weui-panel__hd" style="color: #000 !important; font-weight: bolder; font-size: 15px">工作列表</div>
+			<div id='planitems' class="content-padded" >
+			</div>
+			<div id='footer1' class="weui-loadmore hide">
+				<i class="weui-loading"></i>
+				<span class="weui-loadmore__tips">正在加载</span>
+			</div>
+		</div>
+		<div id="tab2" class="demos-content-padded weui-tab__panel weui-tab__bd-item--active weui-tab__bd-item" style="width: 100%">
+			<div style="padding: 14px 15px 10px; color: #000; font-size: 15px; font-weight: bold">内外勤管理</div>
+			<div class="content-padded">
+				<div class="layer-parent">
+					<a href="./qiandao.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #3E9BF7">
+							<i class="icon iconfont working-grid-icon">&#xe60f;</i>
+						</div>
+						<p class="layer-grid__label">考勤打卡</p>
+					</a>
+					<a href="./qingjia.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #F6B45E">
+							<i class="icon iconfont working-grid-icon">&#xe73b;</i>
+						</div>
+						<p class="layer-grid__label">请假</p>
+					</a>
+					<a href="./waichu.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #3E9BF7">
+							<i class="icon iconfont working-grid-icon">&#xe685;</i>
+						</div>
+						<p class="layer-grid__label">外出</p>
+					</a>
+					<a href="./chuchai.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #3E9BF7">
+							<i class="icon iconfont working-grid-icon">&#xe616;</i>
+						</div>
+						<p class="layer-grid__label">出差</p>
+					</a>
+					<a href="./jiaban.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #FD903E">
+							<i class="icon iconfont working-grid-icon">&#xe666;</i>
+						</div>
+						<p class="layer-grid__label">加班</p>
+					</a>
+				</div>
+			</div>
+			<div style="padding: 14px 15px 10px; color: #000; font-size: 15px; font-weight: bold">业务汇报</div>
+			<div class="content-padded">
+				<div class="layer-parent">
+					<a href="./ribao.html" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #489CD8">
+							<i class="icon iconfont working-grid-icon">&#xe6b7;</i>
+						</div>
+						<p class="layer-grid__label">日报</p>
+					</a>
+					<a id="zb" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #16B78B">
+							<i class="icon iconfont working-grid-icon">&#xe61a;</i>
+						</div>
+						<p class="layer-grid__label">周报</p>
+					</a>
+					<a id="yb" class="layer-grid">
+						<div class="layer-grid__icon working-grid" style="background-color: #FE823C">
+							<i class="icon iconfont working-grid-icon">&#xe610;</i>
+						</div>
+						<p class="layer-grid__label">月报</p>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="tab3" class="demos-content-padded weui-tab__panel weui-tab__bd-item weui-pull-to-refresh"
+		     style="top: 0px !important; width: 100%">
+			<div class="weui-pull-to-refresh__layer">
+				<div class='weui-pull-to-refresh__arrow'></div>
+				<div class='weui-pull-to-refresh__preloader'></div>
+				<div class="down">下拉刷新</div>
+				<div class="up">释放刷新</div>
+				<div class="refresh">正在刷新</div>
+			</div>
+			<div class="weui-panel__hd" style="color: #000 !important; font-weight: bolder; font-size: 15px">日志列表</div>
+			<div id='joutanlitems' class="content-padded">
+			</div>
+			<div id='footer3' class="weui-loadmore hide">
+				<i class="weui-loading"></i>
+				<span class="weui-loadmore__tips">正在加载</span>
+			</div>
+		</div>
+	</div>
+	<div class="weui-tabbar">
+		<a href="#tab1" class="weui-tabbar__item">
+			<i class="weui-tabbar__label icon iconfont footer-icon">&#xe666;</i>
+			<p class="weui-tabbar__label">任务</p>
+		</a>
+		<a href="#tab2" class="weui-tabbar__item weui-bar__item--on">
+			<i class="weui-tabbar__label icon iconfont footer-icon">&#xe622;</i>
+			<p class="weui-tabbar__label">管理</p>
+		</a>
+		<a href="#tab3" class="weui-tabbar__item">
+			<i class="weui-tabbar__label icon iconfont footer-icon">&#xe600;</i>
+			<p class="weui-tabbar__label">日志</p>
+		</a>
+	</div>
+</div>
+
+<script src="./lib/fastclick.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script src="./js/biz.js"></script>
+
+<script>
+	$(function () {
+		FastClick.attach(document.body);
+		getPlanList(true);
+		getJoutanlList(true);
+	});
+	$('#zb').click(function () {
+		$.alert("", "功能尚未开发！", function () {
+		});
+	});
+	$('#yb').click(function () {
+		$.alert("", "功能尚未开发！", function () {
+		});
+	});
+</script>
+<script>
+	$('#tab1').pullToRefresh().on('pull-to-refresh', function (done) {
+		getPlanList(true);
+	});
+	$('#tab1').infinite().on('infinite', function () {
+		getPlanList(false);
+	});
+	$('#tab3').pullToRefresh().on('pull-to-refresh', function (done) {
+		getJoutanlList(true);
+		$(self).pullToRefreshDone();
+	});
+	$('#tab3').infinite().on('infinite', function () {
+		getJoutanlList(false);
+	});
+</script>
+</body>
+</html>

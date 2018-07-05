@@ -1,0 +1,160 @@
+body {
+	font-size: 14px;
+	width: 700px;
+	MARGIN: 0 AUTO;
+	font-family: Arial, "宋体"
+}
+
+ul,
+li {
+	list-style: none;
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+table {
+	width: 700px;
+	border-collapse: collapse
+}
+
+.head_info {
+	margin-top: 50px;
+}
+
+.table1 td {
+	padding-right: 6px;
+	line-height: 1;
+}
+
+.table1 th,
+.table1 td {
+	border: 1px solid #333;
+}
+
+.notes {
+	margin: 1.5em auto 0;
+	width: 500px;
+	line-height: 2;
+}
+
+.undeline {
+	border-bottom: 1px solid #333;
+	vertical-align: inherit;
+}
+
+.text-r {
+	text-align: right;
+	line-height: 2;
+	margin-right: 20px;
+}
+
+table .text-r {
+	font-size: 14px;
+}
+
+.small {
+	font-size: 12px;
+}
+
+.border-t {
+	border-top: 1px solid #333;
+	padding-top: 50px;
+}
+
+.logo img {
+	width: 13%;
+	padding-top: 10px;
+	border-top: 1px solid #ccc;
+}
+
+.tab {
+	height: 40px;
+	font-size: 14px;
+	color: #a4a4a4;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	align: right;
+}
+
+.tab ul {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+.tab li {
+	text-align: center;
+	margin-right: 4px;
+	width: 163px;
+	background: #fff;
+	height: 39px;
+	line-height: 39px;
+	float: right;
+	cursor: pointer;
+}
+
+.tab li a {
+	display: block;
+	text-align: center;
+	width: 161px;
+	background: #fff;
+	border: 1px solid #d5d5d5;
+	border-bottom: none;
+	height: 39px;
+	line-height: 39px;
+	color: #c7c7c7;
+}
+
+.tab li a:hover {
+	color: #fff;
+	background: #c93040;
+	border: 1px solid #c93040;
+	border-bottom: none;
+}
+
+.tab .current a {
+	color: #fff;
+	background: #c93040;
+	border: 1px solid #c93040;
+	border-bottom: none;
+}
+
+.tab .current a:hover {
+	color: #fff;
+	align: right;
+}
+
+.tab .current a:visited {
+	color: #fff;
+	align: right;
+}
+
+#page2ID {
+	min-height: 500px;
+}
+
+.button {
+    border: solid 1px #ddd;
+    background: transparent;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 6px 15px;
+    margin: 0;
+    display: inline-block;
+    line-height: 20px;
+    background-color:rgb(0, 170, 238);
+}

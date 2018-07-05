@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+
+	<context:component-scan base-package="team.nercita.manage.cms" /> 
+
+	<!-- mvc的注解驱动 -->
+	<mvc:annotation-driven />
+	
+	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonMapping" />     <!-- JSON转换器 -->
+			</list>
+		</property>
+	</bean>
+
+	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+	<bean id="jsonMapping"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value> 
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 前缀+ viewName +后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- webroot到某一指定的文件夹的路径 -->
+		<property name="prefix" value="/WEB-INF/view/"></property>
+		<!-- 视图名称的后缀 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- id="multipartResolver"必须是multipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- maxUploadSize:文件上传的最大值以byte为单位 -->
+		<property name="maxUploadSize" value="1024000"></property>
+	</bean>
+	
+	<!--启用shiro注解 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<!-- shiro为集成springMvc 拦截异常，使用注解时无权限的跳转 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<!-- 这里你可以根据需要定义N多个错误异常转发 -->
+				<prop key="org.apache.shiro.authz.UnauthorizedException">redirect:/unauthorized</prop>
+				<prop key="org.apache.shiro.authz.UnauthenticatedException">redirect:/unauthorized</prop>
+				<prop key="java.lang.IllegalArgumentException">/error</prop>  <!-- 参数错误(bizError.jsp) -->
+				<prop key="java.lang.Exception">/error</prop>  <!-- 其他错误为'未定义错误'(unknowError.jsp) -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- 静态资源访问（不拦截此目录下的东西的访问） -->
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/assets/" mapping="/assets/**" />
+	<mvc:resources location="/font/" mapping="/font/**" />
+	<mvc:resources location="/products/" mapping="/products/**" />
+	<mvc:resources location="/upload/" mapping="/upload/**" />
+	<mvc:resources location="/productImage/" mapping="/productImage/**" />
+	<mvc:resources location="/Widget/" mapping="/Widget/**" />
+	<mvc:resources location="/tree/" mapping="/tree/**" />
+	<mvc:resources location="/app/" mapping="/app/**" />
+	<mvc:resources location="/laydate/" mapping="/laydate/**" />
+</beans>

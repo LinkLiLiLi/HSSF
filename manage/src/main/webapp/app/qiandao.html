@@ -1,0 +1,185 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+	<style type="text/css">
+		* {
+			margin: 0px;
+			padding: 0px;
+		}
+		body {
+			text-align: center;
+			height: 100%;
+			overflow: hidden;
+			background-color: #EBEBEB;
+		}
+		.allmap {
+			width: 100%;
+			height: 200px;
+			position: absolute;
+		}
+		#cd-timeline {
+			position: relative;
+			margin-top: 2em;
+			margin-bottom: 2em;
+		}
+		#cd-timeline::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 8px;
+			height: 100px;
+			width: 4px;
+			background: #d7e4ed;
+		}
+		.cd-container {
+			width: 90%;
+			max-width: 1170px;
+			margin: 0 auto;
+		}
+		.cd-timeline-block:first-child {
+			margin-top: 0;
+		}
+		.cd-timeline-block {
+			position: relative;
+		}
+		.cd-timeline-img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			box-shadow: 0 0 0 4px #f4f4f4;
+		}
+		.cd-timeline-img.cd-picture {
+			background: #75ce66;
+		}
+		.cd-timeline-img img {
+			display: block;
+			width: 24px;
+			height: 24px;
+			position: relative;
+			left: 50%;
+			top: 50%;
+			margin-left: -12px;
+			margin-top: -12px;
+		}
+		.cd-timeline-content {
+			position: relative;
+			margin-left: 25px;
+			border-radius: 0.25em;
+			padding-left: 10px;
+			padding-right: 10px;
+			text-align: left;
+			height: 90px;
+		}
+		.cd-timeline-content h2 {
+			color: #303e49;
+		}
+		.cd-timeline-content p {
+			margin: 5px;
+			line-height: 1.6;
+			font-size: 12px;
+		}
+		.update-ka {
+			color: #10AEFF;
+		}
+		.cd-timeline-img.cd-movie {
+			background: #c03b44;
+		}
+		.button {
+			width: 100px;
+			height: 100px;
+			border-radius: 50px;
+			background-color: #10AEFF;
+			margin: auto;
+			line-height: 100px;
+			color: #fff;
+		}
+		.button:active {
+			width: 100px;
+			height: 100px;
+			border-radius: 50px;
+			background-color: #0b97ff;
+			margin: auto;
+			line-height: 100px;
+			color: #fff;
+		}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wqBXfIN3HkpM1AHKWujjCdsi"></script>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+	<title>签到</title>
+</head>
+<body>
+	<div>
+		<div class="allmap" id="allmap"></div>
+		<div style="padding-top: 200px">
+			<section id="cd-timeline" class="cd-container" style="display: none">
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-picture">
+					</div>
+
+					<div class="cd-timeline-content">
+						<h5>上班打卡时间 08:55</h5>
+						<p>北京市昌平区沙河镇功华家园西二村</p>
+						<p class="update-ka">更新打卡></p>
+					</div>
+				</div>
+				<div class="cd-timeline-block">
+					<div class="cd-timeline-img cd-movie">
+					</div>
+
+					<div class="cd-timeline-content">
+						<h5>下班打卡时间</h5>
+						<p></p>
+					</div>
+				</div>
+			</section>
+			<div style="margin-top: 50px">
+				<div id='submit' class="button">
+					签到打卡
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script src="./js/biz.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script type="text/javascript">
+	var position = null;
+	var info = null;
+	var map = new BMap.Map('allmap');
+	var point = new BMap.Point(116.331398, 39.897445);
+	map.centerAndZoom(point, 17.5);
+	var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function (r) {
+		if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+			position = r;
+			var mk = new BMap.Marker(r.point);
+			var gc = new BMap.Geocoder();
+			map.addOverlay(mk);
+			map.panTo(r.point);
+			gc.getLocation(r.point, function (rs) {
+				var addComp = rs.addressComponents;
+				if (addComp.province !== addComp.city) {
+					info = addComp.province + ', ' + addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber;
+				} else {
+					info = addComp.city + ', ' + addComp.district + ', ' + addComp.street + ', ' + addComp.streetNumber;
+				}
+			});
+		} else {
+			alert('定位失败!');
+		}
+	}, {enableHighAccuracy: true});
+	$("#submit").click(function() {
+		if (position && info) {
+			sign(position.point.lat, position.point.lng, info);
+		} else {
+			$.toptip('获取地理位置信息失败');
+		}
+	});
+</script>

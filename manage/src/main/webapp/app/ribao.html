@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>日志</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+</head>
+<body ontouchstart style="background-color: #f8f8f8 !important;">
+<div class="weui-cells__title">日志</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='done' class="weui-textarea" placeholder="请填写工作日志" rows="8"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/500</div>
+		</div>
+	</div>
+</div>
+<a class="weui-btn-area weui-btn weui-btn_primary" href="javascript:" id="submit">提交</a>
+<a class="weui-btn-area weui-btn" style="background-color: red;" href="javascript: void(0);" onclick="fh()">返回</a>
+<script src="./lib/fastclick.js"></script>
+<script src="./js/biz.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script>
+	function fh(){
+		window.location.href="main.html";
+	}
+	var id = '';
+	$(function() {
+		FastClick.attach(document.body);
+		id = getParamsString('id');
+		if (id) {
+			getJoutanlDetail(id);
+		}
+	});
+	$('#dialogs').on('click', '.weui-dialog__btn', function(){
+		$(this).parents('.js_dialog').fadeOut(200);
+	});
+	$("#submit").click(function() {
+		var info = $('#done').val();
+		if (info && info.length > 0) {
+			$.confirm("您确定要提交工作日志吗?", "工作日志", function() {
+				if (id) {
+					editJoutanl(id, info);
+				} else {
+					addJoutanl(info);
+				}
+			}, function() {
+			});
+		} else {
+			$.toptip('请输入工作日志');
+		}
+	});
+</script>
+<script>
+	$(function () {
+		FastClick.attach(document.body);
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>登录</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+</head>
+<body>
+<div style="width: 100%; height: 100%; background: #EBEBEB;">
+	<div class="login-container">
+		<div class="login-label">
+			———用户登录———
+		</div>
+		<form class="cd-form">
+			<p class="fieldset">
+				<label class="iconfont working-grid-icon image-replace">&#xe634;</label>
+				<input class="full-width has-padding has-border" id="signin-username" type="text" placeholder="输入用户名">
+			</p>
+
+			<p class="fieldset">
+				<label class="iconfont working-grid-icon image-replace" for="signin-password">&#xe618;</label>
+				<input class="full-width has-padding has-border" id="signin-password" type="password" placeholder="输入密码">
+			</p>
+		</form>
+		<div class="weui-cells_checkbox">
+			<label class="weui-cell weui-check__label" for="s11">
+				<div class="weui-cell__hd">
+					<input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked">
+					<i class="weui-icon-checked"></i>
+				</div>
+				<div class="weui-cell__bd">
+					<p>记住登录状态</p>
+				</div>
+			</label>
+
+			<p style="padding-left: 16px; padding-right: 16px">
+				<a class="weui-btn weui-btn_primary" href="javascript:" id="submit">登 录</a>
+			</p>
+	</div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script src="./js/biz.js"></script>
+<script>
+	$("#submit").click(function() {
+		var userName = $('#signin-username').val();
+		var password = $('#signin-password').val();
+		if (userName && (userName.length > 0) && password && password.length > 0) {
+			onLogin(userName, password)
+		} else {
+			$.toptip('请输入用户名和密码');
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>外出</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+</head>
+
+<body ontouchstart style="background-color: #f8f8f8 !important;">
+<div class="weui-cells__title">请仔细填写外出信息</div>
+<div class="weui-cells weui-cells_form">
+	<div class="weui-cell">
+		<div class="weui-cell__hd"><label for="starttime" class="weui-label">开始时间</label></div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="starttime" type="text" readonly="">
+		</div>
+	</div>
+	<div class="weui-cell">
+		<div class="weui-cell__hd"><label for="endtime" class="weui-label">结束时间</label></div>
+		<div class="weui-cell__bd">
+			<input class="weui-input" id="endtime" type="text" value="" readonly="">
+		</div>
+	</div>
+	<div class="weui-cell">
+		<div class="weui-cell__hd">
+			<label class="weui-label">时长(天)</label>
+		</div>
+		<div class="weui-cell__bd">
+			<input id="duration" class="weui-input" type="number" placeholder="请输入时长(必填)">
+		</div>
+	</div>
+</div>
+<div class="weui-cells__title">请如实填写外出事由</div>
+<div class="weui-cells">
+	<div class="weui-cell">
+		<div class="weui-cell__bd">
+			<textarea id='yuanyou' class="weui-textarea" placeholder="请输入外出事由(必填)" rows="3"></textarea>
+			<div class="weui-textarea-counter"><span>0</span>/200</div>
+		</div>
+	</div>
+</div>
+<a class="weui-btn-area weui-btn weui-btn_primary" href="javascript:" id="submit">提交</a>
+<a class="weui-btn-area weui-btn" style="background-color: red;" href="javascript: void(0);" onclick="fh()">返回</a>
+<script src="./lib/fastclick.js"></script>
+<script src="./js/biz.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script>
+function fh(){
+	window.location.href="main.html";
+}
+	var startTime = '';
+	var endTime = '';
+	$('#dialogs').on('click', '.weui-dialog__btn', function(){
+		$(this).parents('.js_dialog').fadeOut(200);
+	});
+	$("#submit").click(function() {
+		var info = $('#yuanyou').val();
+		var duration = $('#duration').val();
+		if (startTime === '') {
+			return $.toptip('请选择开始时间');
+		}
+		if (endTime === '') {
+			return $.toptip('请选择结束时间');
+		}
+		if (endTime <= startTime) {
+			return $.toptip('结束时间不能早于开始时间');
+		}
+		if (endTime === '') {
+			return $.toptip('请选择结束时间');
+		}
+		if (!duration) {
+			return $.toptip('请输入时长');
+		}
+		if (info && info.length > 0) {
+			$.confirm("您确定要提交此次外出申请吗?", "外出确认?", function() {
+				absent(2, info, startTime, endTime, duration)
+			}, function() {
+			});
+		} else {
+			$.toptip('请输入外出事由');
+		}
+	});
+	var currentDate = new Date();
+	var startShortDate = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1)+ "-" + currentDate.getDate();
+	var endShortDate = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1)+ "-" + currentDate.getDate();
+	startTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 8).valueOf();
+	endTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 18).valueOf();
+	$("#starttime").datetimePicker({
+		times: function () {
+			return [
+				{
+					values: (function () {
+						var hours = [];
+						hours.push(8);
+						hours.push(12);
+						hours.push(18);
+						return hours;
+					})()
+				},
+				{
+					divider: true,  // 这是一个分隔符
+					content: '时'
+				}
+			];
+		},
+		value: startShortDate + ' 8时',
+		onChange: function (picker, values, displayValues) {
+			var date = new Date(values[0], values[1] -  1, values[2], values[3]);
+			startTime = date.valueOf();
+		},
+	});
+	$("#endtime").datetimePicker({
+		times: function () {
+			return [
+				{
+					values: (function () {
+						var hours = [];
+						hours.push(8);
+						hours.push(12);
+						hours.push(18);
+						return hours;
+					})()
+				},
+				{
+					divider: true,  // 这是一个分隔符
+					content: '时'
+				}
+			];
+		},
+		value: endShortDate + ' 18时',
+		onChange: function (picker, values, displayValues) {
+			var date = new Date(values[0], values[1] -  1, values[2], values[3]);
+			endTime = date.valueOf();
+		},
+	});
+	$(function () {
+		FastClick.attach(document.body);
+	});
+</script>
+</body>
+</html>
